@@ -194,7 +194,7 @@ static void enable(void)
 
 int motor_adc_init(void)
 {
-	_shunt_resistance = configGet("mot_i_shunt_mr") / 1000.0f;
+    _shunt_resistance = configGet("mot_i_shunt_mr") / 10000.0f;
 
 	chSysDisable();
 
@@ -236,18 +236,26 @@ struct motor_adc_sample motor_adc_get_last_sample(void)
 
 float motor_adc_convert_input_voltage(int raw)
 {
-	static const float RTOP = 10.0F;
-	static const float RBOT = 1.3F;
-	static const float SCALE = (RTOP + RBOT) / RBOT;
-	const float unscaled = raw * (ADC_REF_VOLTAGE / (float)(1 << ADC_RESOLUTION));
-	return unscaled * SCALE;
+    static const float RTOP = 13.7;//10.0F;
+    static const float RBOT = 1.5;//1.3F;
+    static const float SCALE = (RTOP + RBOT) / RBOT;
+    const float unscaled = raw * (ADC_REF_VOLTAGE / (float)(1 << ADC_RESOLUTION));
+    return unscaled * SCALE;
 }
 
 float motor_adc_convert_input_current(int raw)
 {
-	// http://www.diodes.com/datasheets/ZXCT1051.pdf
-	const float vout = raw * (ADC_REF_VOLTAGE / (float)(1 << ADC_RESOLUTION));
-	const float vsense = vout / 10;
-	const float iload = vsense / _shunt_resistance;
-	return iload;
+    // http://www.diodes.com/datasheets/ZXCT1051.pdf
+    const float vout = raw * (ADC_REF_VOLTAGE / (float)(1 << ADC_RESOLUTION));
+
+    //equation is Is = vOut / (Rs * RL* gm)
+    // RL * gm = 110.   (110kohm * 1000uA/v)
+
+    const float cfDivisor = _shunt_resistance * 110;
+    const float iload = vout / cfDivisor;
+
+
+   // const float vsense = vout / 10;
+//	const float iload = vsense / _shunt_resistance;
+    return iload;
 }
