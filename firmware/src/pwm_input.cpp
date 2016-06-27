@@ -58,8 +58,8 @@ chibios_rt::EvtSource _update_event;
 static volatile unsigned _last_pulse_width_usec;
 
 CONFIG_PARAM_BOOL("pwm_enable", true)
-CONFIG_PARAM_INT("pwm_min_usec",  1000,  800, 1400)
-CONFIG_PARAM_INT("pwm_max_usec",  2000, 1800, 2200)
+CONFIG_PARAM_INT("pwm_min_usec",  1115,  800, 1400)
+CONFIG_PARAM_INT("pwm_max_usec",  1900, 1800, 2200)
 
 
 static void icu_pulse_width_callback(ICUDriver* icup)

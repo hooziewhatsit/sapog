@@ -92,7 +92,17 @@ static void cmd_stat(BaseSequentialStream *chp, int argc, char *argv[])
 	std::printf("ZC failures   %lu\n", (unsigned long)motor_get_zc_failures_since_start());
     std::printf("Temperature     %dC\n", temperature_sensor::get_temperature_K() - 273);
 }
+static void cmd_o(BaseSequentialStream *chp, int argc, char *argv[])
+{
+    float voltage = 0, current = 0;
+    motor_get_input_voltage_current(&voltage, &current);
 
+    std::printf("Power V/A     %-9f %f\n", voltage, current);
+    std::printf("RPM/DC        %-9u %f\n", motor_get_rpm(), motor_get_duty_cycle());
+    std::printf("Active limits %i\n", motor_get_limit_mask());
+    std::printf("ZC failures   %lu\n", (unsigned long)motor_get_zc_failures_since_start());
+    std::printf("Temperature     %dC\n", temperature_sensor::get_temperature_K() - 273);
+}
 static void cmd_test(BaseSequentialStream *chp, int argc, char *argv[])
 {
 	puts("Hardware test...");
@@ -289,6 +299,7 @@ static const ShellCommand _commands[] =
 	COMMAND(md)
 	COMMAND(m)
 	COMMAND(zubax_id)
+    COMMAND(o)
 	{NULL, NULL}
 };
 

@@ -120,7 +120,7 @@ CONFIG_PARAM_INT("ctl_dir",        0,      0,       1)
 
 CONFIG_PARAM_INT("mot_rpm_min",    1000,   50,      5000)
 
-CONFIG_PARAM_FLOAT("mot_i_max",    20.0,   1.0,     60.0)
+CONFIG_PARAM_FLOAT("mot_i_max",    35.0,   1.0,     60.0)
 CONFIG_PARAM_FLOAT("mot_i_max_p",  0.2,    0.01,    2.0)
 
 CONFIG_PARAM_FLOAT("mot_lpf_freq", 20.0,   1.0,     200.0)
